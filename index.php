@@ -290,13 +290,13 @@
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            await handleRequest('/api/signup.php', formData, 'Cadastro');
+            await handleRequest('api/signup.php', formData, 'Cadastro');
         });
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            await handleRequest('/api/login.php', formData, 'Login');
+            await handleRequest('api/login.php', formData, 'Login');
         });
 
         async function handleRequest(url, formData, action) {
