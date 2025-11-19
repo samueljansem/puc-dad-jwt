@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/JWT.php';
 
@@ -47,6 +48,7 @@ try {
     $stmt = $db->prepare("DELETE FROM refresh_tokens WHERE expires_at < datetime('now')");
     $stmt->execute();
 
+    ob_clean();
     echo json_encode([
         'success' => true,
         'message' => 'Login successful!',
@@ -60,12 +62,14 @@ try {
     ]);
 
 } catch (PDOException $e) {
+    ob_clean();
     http_response_code(500);
     echo json_encode([
         'success' => false,
         'message' => 'Database error: ' . $e->getMessage()
     ]);
 } catch (Exception $e) {
+    ob_clean();
     http_response_code(401);
     echo json_encode([
         'success' => false,
