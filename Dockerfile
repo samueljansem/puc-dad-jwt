@@ -20,7 +20,14 @@ RUN mkdir -p /var/www/html/data && \
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
 
-RUN echo '<Directory /var/www/html>\n\
+RUN echo '<FilesMatch \.php$>\n\
+    SetHandler application/x-httpd-php\n\
+</FilesMatch>\n\
+\n\
+DirectoryIndex disabled\n\
+DirectoryIndex index.php index.html\n\
+\n\
+<Directory /var/www/html>\n\
     Options Indexes FollowSymLinks\n\
     AllowOverride All\n\
     Require all granted\n\
