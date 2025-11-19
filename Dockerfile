@@ -1,0 +1,32 @@
+FROM php:8.2-apache
+
+RUN apt-get update && apt-get install -y \
+    sqlite3 \
+    libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN a2enmod rewrite
+
+WORKDIR /var/www/html
+
+COPY . /var/www/html/
+
+RUN mkdir -p /var/www/html/data && \
+    chown -R www-data:www-data /var/www/html/data && \
+    chmod -R 755 /var/www/html/data
+
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
+
+RUN echo '<Directory /var/www/html>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/docker-php.conf && \
+    a2enconf docker-php
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
