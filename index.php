@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JWT Authentication Demo</title>
+    <title>Autenticação JWT</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,21 +23,19 @@
 
         .container {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #ddd;
             max-width: 900px;
             width: 100%;
             padding: 40px;
         }
 
         h1 {
-            text-align: center;
             color: #333;
             margin-bottom: 10px;
+            font-size: 24px;
         }
 
         .subtitle {
-            text-align: center;
             color: #666;
             margin-bottom: 30px;
             font-size: 14px;
@@ -57,15 +55,15 @@
         }
 
         .form-section {
-            border: 2px solid #f0f0f0;
-            border-radius: 8px;
+            border: 1px solid #ddd;
             padding: 25px;
         }
 
         .form-section h2 {
-            color: #667eea;
+            color: #333;
             margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: normal;
         }
 
         .form-group {
@@ -75,51 +73,45 @@
         label {
             display: block;
             margin-bottom: 5px;
-            color: #555;
+            color: #333;
             font-size: 14px;
-            font-weight: 500;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
             font-size: 14px;
-            transition: border-color 0.3s;
         }
 
         input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #666;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+            background: #333;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            transition: transform 0.2s;
         }
 
         button:hover {
-            transform: translateY(-2px);
+            background: #555;
         }
 
         button:active {
-            transform: translateY(0);
+            background: #000;
         }
 
         .response-container {
-            background: #f8f9fa;
-            border-radius: 8px;
+            background: #fafafa;
+            border: 1px solid #ddd;
             padding: 20px;
             display: none;
         }
@@ -133,28 +125,32 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
         }
 
         .response-header h3 {
             color: #333;
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: normal;
         }
 
         .status {
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 4px 10px;
             font-size: 12px;
-            font-weight: 600;
+            border: 1px solid;
         }
 
         .status.success {
-            background: #d4edda;
-            color: #155724;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
         }
 
         .status.error {
-            background: #f8d7da;
-            color: #721c24;
+            background: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
         }
 
         .token-container {
@@ -162,8 +158,7 @@
         }
 
         .token-label {
-            font-weight: 600;
-            color: #555;
+            color: #333;
             margin-bottom: 5px;
             font-size: 13px;
         }
@@ -177,11 +172,10 @@
         .token-value {
             flex: 1;
             background: white;
-            padding: 12px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            padding: 10px;
+            border: 1px solid #ccc;
             font-family: 'Courier New', monospace;
-            font-size: 12px;
+            font-size: 11px;
             word-break: break-all;
             max-height: 100px;
             overflow-y: auto;
@@ -190,55 +184,61 @@
         .copy-btn {
             width: auto;
             padding: 8px 16px;
-            background: #667eea;
-            font-size: 14px;
+            background: #555;
+            font-size: 12px;
             white-space: nowrap;
         }
 
+        .copy-btn:hover {
+            background: #777;
+        }
+
         .copy-btn.copied {
-            background: #28a745;
+            background: #2e7d32;
         }
 
         .message {
-            padding: 12px;
-            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid;
             margin-top: 10px;
             font-size: 14px;
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
+            background: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>JWT Authentication Demo</h1>
-        <p class="subtitle">Sign up or login to generate access and refresh tokens</p>
+        <h1>Autenticação JWT</h1>
+        <p class="subtitle">Cadastre-se ou faça login para gerar tokens de acesso</p>
 
         <div class="forms-container">
             <div class="form-section">
-                <h2>Sign Up</h2>
+                <h2>Cadastro</h2>
                 <form id="signupForm">
                     <div class="form-group">
-                        <label for="signup-username">Username</label>
+                        <label for="signup-username">Nome de usuário</label>
                         <input type="text" id="signup-username" name="username" required>
                     </div>
                     <div class="form-group">
-                        <label for="signup-email">Email</label>
+                        <label for="signup-email">E-mail</label>
                         <input type="email" id="signup-email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="signup-password">Password</label>
+                        <label for="signup-password">Senha</label>
                         <input type="password" id="signup-password" name="password" required>
                     </div>
-                    <button type="submit">Sign Up</button>
+                    <button type="submit">Cadastrar</button>
                 </form>
             </div>
 
@@ -246,38 +246,38 @@
                 <h2>Login</h2>
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="login-email">Email</label>
+                        <label for="login-email">E-mail</label>
                         <input type="email" id="login-email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="login-password">Password</label>
+                        <label for="login-password">Senha</label>
                         <input type="password" id="login-password" name="password" required>
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Entrar</button>
                 </form>
             </div>
         </div>
 
         <div class="response-container" id="responseContainer">
             <div class="response-header">
-                <h3>Response</h3>
+                <h3>Resposta</h3>
                 <span class="status" id="status"></span>
             </div>
 
             <div id="tokensContainer" style="display: none;">
                 <div class="token-container">
-                    <div class="token-label">Access Token:</div>
+                    <div class="token-label">Token de Acesso:</div>
                     <div class="token-box">
                         <div class="token-value" id="accessToken"></div>
-                        <button class="copy-btn" onclick="copyToken('accessToken')">Copy</button>
+                        <button class="copy-btn" onclick="copyToken('accessToken')">Copiar</button>
                     </div>
                 </div>
 
                 <div class="token-container">
-                    <div class="token-label">Refresh Token:</div>
+                    <div class="token-label">Token de Atualização:</div>
                     <div class="token-box">
                         <div class="token-value" id="refreshToken"></div>
-                        <button class="copy-btn" onclick="copyToken('refreshToken')">Copy</button>
+                        <button class="copy-btn" onclick="copyToken('refreshToken')">Copiar</button>
                     </div>
                 </div>
             </div>
@@ -290,7 +290,7 @@
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            await handleRequest('/api/signup.php', formData, 'Sign Up');
+            await handleRequest('/api/signup.php', formData, 'Cadastro');
         });
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -309,7 +309,7 @@
                 const data = await response.json();
                 displayResponse(data, action);
             } catch (error) {
-                displayResponse({ success: false, message: 'Network error: ' + error.message }, action);
+                displayResponse({ success: false, message: 'Erro de rede: ' + error.message }, action);
             }
         }
 
@@ -324,10 +324,10 @@
             container.classList.add('show');
 
             if (data.success) {
-                status.textContent = 'Success';
+                status.textContent = 'Sucesso';
                 status.className = 'status success';
                 message.className = 'message success';
-                message.textContent = data.message || `${action} successful!`;
+                message.textContent = data.message || `${action} realizado com sucesso!`;
 
                 if (data.access_token && data.refresh_token) {
                     tokensContainer.style.display = 'block';
@@ -337,10 +337,10 @@
                     tokensContainer.style.display = 'none';
                 }
             } else {
-                status.textContent = 'Error';
+                status.textContent = 'Erro';
                 status.className = 'status error';
                 message.className = 'message error';
-                message.textContent = data.message || `${action} failed!`;
+                message.textContent = data.message || `${action} falhou!`;
                 tokensContainer.style.display = 'none';
             }
         }
@@ -352,7 +352,7 @@
             navigator.clipboard.writeText(text).then(() => {
                 const btn = event.target;
                 const originalText = btn.textContent;
-                btn.textContent = 'Copied!';
+                btn.textContent = 'Copiado!';
                 btn.classList.add('copied');
 
                 setTimeout(() => {
