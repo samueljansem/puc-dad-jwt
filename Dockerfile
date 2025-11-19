@@ -27,6 +27,8 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/docker-php.conf && \
     a2enconf docker-php
 
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]

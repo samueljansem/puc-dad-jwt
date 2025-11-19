@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /jwt/
+RewriteBase /
 
 # Enable CORS for API requests
 <IfModule mod_headers.c>
